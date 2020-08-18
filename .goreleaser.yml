@@ -1,0 +1,21 @@
+# .goreleaser.yml
+# Build customization
+builds:
+  - main: ./cmd/helm-github/main.go
+    binary: helm-github
+    ldflags: -s -w -X github.com/web-seven/helm-github/cmd/helm-github/cmd.version={{.Version}} -X github.com/web-seven/helm-github/cmd/helm-github/cmd.commit={{.Commit}} -X github.com/web-seven/helm-github/cmd/helm-github/cmd.date={{.Date}}
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+    env:
+      - CGO_ENABLED=0
+archives:
+  - id: helm-github
+    format: tar.gz
+    replacements:
+      amd64: x86_64
+      darwin: Darwin
+      linux: Linux
