@@ -1,0 +1,12 @@
+name: "github"
+version: "0.1.0"
+usage: "get the last release name"
+description: "get the last release name"
+ignoreFlags: false
+downloaders:
+- command: "./bin/repo.sh"
+  protocols:
+  - "github"
+- command: "./bin/release.sh"
+  protocols:
+  - "github+release"

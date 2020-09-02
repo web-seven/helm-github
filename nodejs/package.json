@@ -1,0 +1,13 @@
+{
+    "name": "helm-github",
+    "version": "1.0.0",
+    "description": "",
+    "dependencies": {
+        "@octokit/rest": "^18.0.4",
+        "js-yaml": "^3.14.0"
+    },
+    "devDependencies": {
+        "webpack": "4.44.1",
+        "webpack-cli": "3.3.12"
+    }
+}
