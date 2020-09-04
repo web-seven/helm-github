@@ -27,7 +27,7 @@ jobs:
       - name: Build 
         run: npm run build
       - name: Create archive
-        run: cd dist && zip -r plugin-nodejs.zip .
+        run: cd dist && tar -czf ../plugin-nodejs.tar.gz ./
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -35,7 +35,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          release_name: ${{ github.ref }}
           draft: false
           prerelease: false
       - name: Upload Release Asset
@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./nodejs/dist/plugin-nodejs.zip
-          asset_name: plugin-nodejs.zip
-          asset_content_type: application/zip
+          asset_path: ./nodejs/dist/plugin-nodejs.tar.gz
+          asset_name: plugin-nodejs.tar.gz
+          asset_content_type: application/x-tar
       
