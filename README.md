@@ -13,7 +13,7 @@
 ## Pre-requisites
 1. Plugin require latest version of [NodeJS](https://nodejs.org/) to be installed.
 1. For communication with GitHub plugin needs authentication to GitHub API using [access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token):
- -   Use a Github Access Token via [`export GITHUB_TOKEN={token_value}` system variable](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
+ -   Use a Github Access Token via system variable `export GITHUB_TOKEN={token_value}`
 
 ## Installation
 
