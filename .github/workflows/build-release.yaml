@@ -27,7 +27,7 @@ jobs:
       - name: Build 
         run: npm run build
       - name: Create archive
-        run: zip -r plugin-nodejs.zip ./dist
+        run: cd dist && zip -r plugin-nodejs.zip .
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./dist/plugin-nodejs.zip
+          asset_path: ./nodejs/dist/plugin-nodejs.zip
           asset_name: plugin-nodejs.zip
           asset_content_type: application/zip
       
