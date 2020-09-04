@@ -8,6 +8,10 @@
     },
     "devDependencies": {
         "webpack": "4.44.1",
-        "webpack-cli": "3.3.12"
+        "webpack-cli": "3.3.12",
+        "copy-webpack-plugin": "^6.1.0"
+    },
+    "scripts": {
+        "build": "webpack --config webpack.config.js"
     }
 }
