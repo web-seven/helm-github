@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./plugin-nodejs.zip
+          asset_path: ./dist/plugin-nodejs.zip
           asset_name: plugin-nodejs.zip
           asset_content_type: application/zip
       
