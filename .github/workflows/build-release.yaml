@@ -2,7 +2,7 @@ name: Build Release
 on: 
   push:
     tags:
-      - v*
+      - 0.0.*
 
 env:
   TAG: $(git describe --tags --abbrev=0)
@@ -27,7 +27,7 @@ jobs:
       - name: Build 
         run: npm run build
       - name: Create archive
-        run: cd dist && tar -czf ../helm-github-nodejs.tar.gz ./
+        run: cd dist && tar -czf ../helm-github_nodejs.tar.gz ./
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
