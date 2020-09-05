@@ -8,7 +8,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/web-seven/helm-github)
 
 
-`helm-github` is a [helm](https://github.com/kubernetes/helm) plugin that allows you to manage private helm repositories on [Github Releases](https://docs.github.com/en/github/administering-a-repository/about-releases) created by [Helm Chart Releaser](https://github.com/helm/chart-releaser)
+`helm-github` is a [helm](https://github.com/kubernetes/helm) plugin that allows you to manage private helm repositories on [Github Releases](https://docs.github.com/en/github/administering-a-repository/about-releases) created by [Helm Chart Releaser Action 2](https://github.com/web-seven/chart-releaser-action)
 
 ## Pre-requisites
 1. Plugin require latest version of [NodeJS](https://nodejs.org/) to be installed.
