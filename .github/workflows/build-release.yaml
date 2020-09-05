@@ -2,7 +2,7 @@ name: Build Release
 on: 
   push:
     tags:
-      - 0.0.*
+      - 1.0.*
 
 env:
   TAG: $(git describe --tags --abbrev=0)
