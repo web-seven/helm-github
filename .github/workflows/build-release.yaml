@@ -27,7 +27,7 @@ jobs:
       - name: Build 
         run: npm run build
       - name: Create archive
-        run: cd dist && tar -czf ../plugin-nodejs.tar.gz ./
+        run: cd dist && tar -czf ../helm-github-nodejs.tar.gz ./
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./nodejs/plugin-nodejs.tar.gz
-          asset_name: plugin-nodejs.tar.gz
+          asset_path: ./nodejs/helm-github_nodejs.tar.gz
+          asset_name: helm-github_nodejs.tar.gz
           asset_content_type: application/x-tar
       

@@ -16,7 +16,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from: 'bin', to: 'bin' },
-        { from: 'plugin.yaml', to: 'plugin.yaml' },
+        { from: '../plugin.yaml', to: 'plugin.yaml' },
         { from: '../LICENSE', to: '' },
         { from: '../README.md', to: '' },
       ],

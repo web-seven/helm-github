@@ -1,7 +1,7 @@
 name: "github"
-version: "0.1.0"
-usage: "get the last release name"
-description: "get the last release name"
+version: "0.0.9"
+usage: ""
+description: ""
 ignoreFlags: false
 downloaders:
 - command: "./bin/repo.sh"
@@ -10,3 +10,6 @@ downloaders:
 - command: "./bin/release.sh"
   protocols:
   - "github+release"
+hooks:
+  install: "cd $HELM_PLUGIN_DIR; ./scripts/install.sh"
+  update: "cd $HELM_PLUGIN_DIR; ./scripts/install.sh"

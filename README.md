@@ -19,7 +19,7 @@
 
 Install the stable version:
 ```shell
-$ helm plugin install https://github.com/web-seven/helm-github/releases/download/{VERSION}/plugin-nodejs.tar.gz
+$ helm plugin install https://github.com/web-seven/helm-github.git
 ```
 
 ## Usage
