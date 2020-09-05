@@ -47,7 +47,7 @@ else
 fi
 
 # Install bin
-rm -rf bin && mkdir bin && tar xvf $filename -C bin > /dev/null && rm -f $filename
+rm -rf bin && rm -rf go && rm -rf nodejs && tar xvf $filename > /dev/null && rm -f $filename
 
 echo "helm-github ${version} is correctly installed."
 echo
