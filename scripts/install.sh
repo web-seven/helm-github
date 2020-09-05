@@ -48,6 +48,7 @@ fi
 
 # Install bin
 rm -rf bin && rm -rf go && rm -rf nodejs && tar xvf $filename > /dev/null && rm -f $filename
+chmod -R 755 ./bin
 
 echo "helm-github ${version} is correctly installed."
 echo
