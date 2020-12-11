@@ -4,7 +4,7 @@ const https = require('https');
 const GITHUB_TOKEN = process.env['GITHUB_TOKEN'];
 
 if (!GITHUB_TOKEN) {
-    process.stderr.write('GITHUB_TOKEN not found in evironment.\n');
+    process.stderr.write('GITHUB_TOKEN not found in environment.\n');
     return;
 }
 

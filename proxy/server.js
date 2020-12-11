@@ -6,6 +6,21 @@ const hostname = process.env.GITHUB_PROXY_HOST_NAME ? process.env.GITHUB_PROXY_H
 const port = process.env.GITHUB_PROXY_PORT ? process.env.GITHUB_PROXY_PORT : 80;
 
 const server = http.createServer((req, res) => {
+    let token = '';
+    if(!process.env.GITHUB_TOKEN || process.env.GITHUB_TOKEN == '') {
+        if (!req.headers.authorization || req.headers.authorization.indexOf('Basic ') === -1) {
+            res.statusCode = 401;
+            res.end('Missing Authorization Header');
+            return 
+        }
+    
+        const base64Credentials =  req.headers.authorization.split(' ')[1];
+        const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
+        const [username, password] = credentials.split(':');
+        token = password;
+    } else {
+        token = process.env.GITHUB_TOKEN;
+    }
 
     res.setHeader('Content-Type', 'text/plain');
     const [owner, repo, chartFile] = req.url.replace(/^\/|\/$/g, '').split('/');
@@ -16,7 +31,7 @@ const server = http.createServer((req, res) => {
         schema = 'https';
     }
 
-    exec(`helm repo add ${repoName} github://${repoName} && helm repo update `, (error, stdout, stderr) => {
+    exec(`export GITHUB_TOKEN=${token} && helm repo add ${repoName} github://${repoName} && helm repo update `, (error, stdout, stderr) => {
         if (error || stderr) {
             res.statusCode = 500;
             console.debug(error);
@@ -27,7 +42,7 @@ const server = http.createServer((req, res) => {
         if (req.url.includes('.tgz')) {
 
             const chartUrl = `github+release:/${req.url}`;
-            const pullCommand = `helm pull --destination /tmp ${chartUrl}`;
+            const pullCommand = `export GITHUB_TOKEN=${token} && helm pull --destination /tmp ${chartUrl}`;
             let pullResponse = '';
             try {
                 pullResponse = execSync(pullCommand).toString();
@@ -50,7 +65,7 @@ const server = http.createServer((req, res) => {
                 res.end(data);
             });
         } else {
-            exec(`cat $(helm env HELM_REPOSITORY_CACHE)/${repoName}-index.yaml `, (error, stdout, stderr) => {
+            exec(`export GITHUB_TOKEN=${token} && cat $(helm env HELM_REPOSITORY_CACHE)/${repoName}-index.yaml `, (error, stdout, stderr) => {
                 if (error || stderr) {
                     res.statusCode = 500;
                     console.debug(error);

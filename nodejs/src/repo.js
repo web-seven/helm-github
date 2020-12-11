@@ -3,7 +3,7 @@ const yaml = require("js-yaml");
 const GITHUB_TOKEN = process.env['GITHUB_TOKEN'];
 
 if (!GITHUB_TOKEN) {
-    process.stderr.write('GITHUB_TOKEN not found in evironment.\n');
+    process.stderr.write('GITHUB_TOKEN not found in environment.\n');
     return;
 }
 
