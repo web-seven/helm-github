@@ -1,0 +1,28 @@
+name: Build Proxy Chart
+on: 
+  push:
+    tags:
+      - 1.0.*
+
+env:
+  TAG: $(git describe --tags --abbrev=0)
+
+jobs:
+  build:
+    name: Build NodeJS version
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: proxy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build Docker image
+        run: docker build -f ./Dockerfile -t docker.pkg.github.com/web-seven/helm-github/helm-github-plugin-proxy:${{ env.TAG }} .
+      - name: Login to Github Docker Registry
+        run: docker login --username ${GITHUB_ACTOR} --password ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
+      - name: Push Docker image to registry.
+        run: docker push docker.pkg.github.com/web-seven/helm-github/helm-github-plugin-proxy:${{ env.TAG }}
+   
+      
