@@ -3,7 +3,7 @@ const { exec, execSync } = require("child_process");
 const fs = require('fs');
 
 const hostname = process.env.GITHUB_PROXY_HOST_NAME ? process.env.GITHUB_PROXY_HOST_NAME : '0.0.0.0';
-const port = process.env.GITHUB_PROXY_PORT ? process.env.GITHUB_PROXY_PORT : 7000;
+const port = process.env.GITHUB_PROXY_PORT ? process.env.GITHUB_PROXY_PORT : 80;
 
 const server = http.createServer((req, res) => {
 
