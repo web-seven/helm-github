@@ -29,29 +29,29 @@ octokit.repos.
         }
 
         data.forEach((release) => {
-            console.debug(release);
             const version = release.name.substr(release.name.indexOf(semver.coerce(release.name)));
             const chartName = release.name.replace('-' + version, '');
             if (repoData.entries[chartName] == undefined) {
                 repoData.entries[chartName] = [];
             }
-            release.assets.forEach((asset)=>{
-                const releaseData = {
-                    apiVersion: "v2",
-                    version: version,
-                    name: chartName,
-                    appVersion: asset.label,
-                    type: 'application',
-                    description: release.body,
-                    digest: release.node_id,
-                    created: release.created_at,
-                    urls: [
-                        'github+release://' + owner + '/' + repo + '/' + release.name + '.tgz'
-                    ]
-                };
-                repoData.entries[chartName].push(releaseData);
-            })
-            
+            if(release.assets) {
+                release.assets.forEach((asset)=>{
+                    const releaseData = {
+                        apiVersion: "v2",
+                        version: version,
+                        name: chartName,
+                        appVersion: asset.label,
+                        type: 'application',
+                        description: release.body,
+                        digest: release.node_id,
+                        created: release.created_at,
+                        urls: [
+                            'github+release://' + owner + '/' + repo + '/' + release.name + '.tgz'
+                        ]
+                    };
+                    repoData.entries[chartName].push(releaseData);
+                })
+            }
         })
 
         process.stdout.write(yaml.safeDump(repoData));
