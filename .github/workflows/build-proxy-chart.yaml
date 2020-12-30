@@ -2,7 +2,7 @@ name: Build Proxy Chart
 on: 
   push:
     tags:
-      - 1.0.*
+      - 1.*
 
 env:
   TAG: $(git describe --tags --abbrev=0)
