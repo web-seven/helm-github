@@ -57,6 +57,7 @@ switch (command) {
                     owner: owner,
                     repo: repo,
                     tag_name: chartName,
+                    name: chartName,
                     body: chartMeta.description,
                 }).then(({data})=>{
                     octokit.repos.uploadReleaseAsset({

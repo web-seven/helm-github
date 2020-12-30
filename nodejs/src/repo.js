@@ -29,6 +29,9 @@ octokit.repos.
         }
 
         data.forEach((release) => {
+            if(!release['name']) {
+                return;
+            }
             const version = release.name.substr(release.name.indexOf(semver.coerce(release.name)));
             const chartName = release.name.replace('-' + version, '');
             if (repoData.entries[chartName] == undefined) {
