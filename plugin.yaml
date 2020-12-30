@@ -3,6 +3,7 @@ version: "1.0.0"
 usage: ""
 description: ""
 ignoreFlags: false
+command: "$HELM_PLUGIN_DIR/bin/helm-github.sh"
 downloaders:
 - command: "./bin/repo.sh"
   protocols:
