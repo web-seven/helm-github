@@ -49,7 +49,6 @@ switch (command) {
     case 'push':
         const buf = tarballPathToMemorySync(releaseFile, /Chart\.yaml/)
         const chartMeta = yaml.load(buf.toString())
-        console.debug(chartMeta);
         const reposConfig = yaml.load(fs.readFileSync(process.env.HELM_REPOSITORY_CONFIG).toString());
         const chartName = chartMeta.name + '-' + chartMeta.version;
         reposConfig.repositories
