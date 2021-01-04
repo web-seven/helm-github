@@ -16,8 +16,10 @@ const repositoryName = process.argv[4];
 
 function tarballPathToMemorySync(tarballPath, fileInTar) {
     let entryBuffer = undefined;
+    let found = false;
     const onentry = entry => {
-        if (entry.path.search(fileInTar) > -1) {
+        if (!found && entry.path.search(fileInTar) > -1) {
+            found = true;
             let data = []
             entry.on('data', c => {
                 data.push(c)
@@ -47,6 +49,7 @@ switch (command) {
     case 'push':
         const buf = tarballPathToMemorySync(releaseFile, /Chart\.yaml/)
         const chartMeta = yaml.load(buf.toString())
+        console.debug(chartMeta);
         const reposConfig = yaml.load(fs.readFileSync(process.env.HELM_REPOSITORY_CONFIG).toString());
         const chartName = chartMeta.name + '-' + chartMeta.version;
         reposConfig.repositories
