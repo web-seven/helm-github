@@ -13,6 +13,7 @@ const octokit = new Octokit({
 const command = process.argv[2];
 const releaseFile = process.argv[3];
 const repositoryName = process.argv[4];
+const target = process.argv[5];
 
 function tarballPathToMemorySync(tarballPath, fileInTar) {
     let entryBuffer = undefined;
@@ -59,6 +60,7 @@ switch (command) {
                     owner: owner,
                     repo: repo,
                     tag_name: chartName,
+                    target_commitish: target,
                     name: chartName,
                     body: chartMeta.description,
                 }).then(({data})=>{
