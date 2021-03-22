@@ -1,7 +1,10 @@
 const { Octokit } = require("@octokit/rest");
 const yaml = require("js-yaml");
 const semver = require("semver");
+const fs = require('fs');
+const merge = require('deepmerge')
 const GITHUB_TOKEN = process.env['GITHUB_TOKEN'];
+const HELM_GITHUB_MERGE_INDEX_FILE = process.env['HELM_GITHUB_MERGE_INDEX_FILE'];
 
 if (!GITHUB_TOKEN) {
     process.stderr.write('GITHUB_TOKEN not found in environment.\n');
@@ -22,7 +25,7 @@ octokit.repos.
     })
     .then(({ data }) => {
 
-        const repoData = {
+        let repoData = {
             apiVersion: 'v1',
             entries: {
             }
@@ -56,6 +59,13 @@ octokit.repos.
                 })
             }
         })
+
+
+
+        if(HELM_GITHUB_MERGE_INDEX_FILE) {
+            const mergeRepoIndex = yaml.load(fs.readFileSync(HELM_GITHUB_MERGE_INDEX_FILE));
+            repoData = merge(repoData, mergeRepoIndex);
+        }
 
         process.stdout.write(yaml.safeDump(repoData));
     });
