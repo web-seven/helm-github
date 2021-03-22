@@ -64,7 +64,7 @@ octokit.repos.
 
         if(HELM_GITHUB_MERGE_INDEX_FILE) {
             const mergeRepoIndex = yaml.load(fs.readFileSync(HELM_GITHUB_MERGE_INDEX_FILE));
-            repoData = merge(repoData, mergeRepoIndex);
+            repoData = merge(mergeRepoIndex, repoData);
         }
 
         process.stdout.write(yaml.safeDump(repoData));
