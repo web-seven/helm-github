@@ -6,6 +6,7 @@ module.exports = {
       repo: './src/repo.js',
       release: './src/release.js',
       "helm-github": './src/helm-github.js',
+      file: './src/file.js'
   },
   mode: 'production',
   target: "node",
