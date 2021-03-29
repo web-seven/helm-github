@@ -60,13 +60,12 @@ octokit.repos.
             }
         })
 
-
-
-        if(HELM_GITHUB_MERGE_INDEX_FILE) {
+        
+        if(HELM_GITHUB_MERGE_INDEX_FILE && fs.existsSync(HELM_GITHUB_MERGE_INDEX_FILE)) {
             const mergeRepoIndex = yaml.load(fs.readFileSync(HELM_GITHUB_MERGE_INDEX_FILE));
             repoData = merge(mergeRepoIndex, repoData);
         }
-
+        
         process.stdout.write(yaml.safeDump(repoData));
     });
 
