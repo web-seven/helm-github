@@ -32,9 +32,10 @@ jobs:
           helm package --version ${{ env.TAG }} --app-version ${{ env.TAG }} ./
           git config --global user.email "${GITHUB_ACTOR}"
           git config --global user.name "${GITHUB_ACTOR}"
-          git tag -a helm-github-proxy-${{ env.TAG }} -m ''
-          git push origin helm-github-proxy-${{ env.TAG }}
-          helm github push helm-github-proxy-${{ env.TAG }}.tgz helm-github ${{ env.TAG }}
+          export ORIGIN_TAG=${{ env.TAG }}
+          git tag -a helm-github-proxy-$ORIGIN_TAG -m ''
+          git push origin helm-github-proxy-$ORIGIN_TAG
+          helm github push helm-github-proxy-$ORIGIN_TAG.tgz helm-github $ORIGIN_TAG
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
    
