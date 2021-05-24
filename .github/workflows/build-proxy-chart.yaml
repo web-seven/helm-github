@@ -32,6 +32,6 @@ jobs:
           helm package --version ${{ env.TAG }} --app-version ${{ env.TAG }} ./
           helm github push helm-github-${{ env.TAG }}.tgz helm-github ${{ env.TAG }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
    
       
