@@ -24,5 +24,14 @@ jobs:
         run: docker login --username ${GITHUB_ACTOR} --password ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
       - name: Push Docker image to registry.
         run: docker push docker.pkg.github.com/web-seven/helm-github/helm-github-plugin-proxy:${{ env.TAG }}
+      - name: Create Helm Chart
+        working-directory: charts/helm-github-proxy
+        run: |
+          helm plugin install https://github.com/web-seven/helm-github.git
+          helm repo add helm-github github://web-seven/helm-github
+          helm package --version ${{ env.TAG }} --app-version ${{ env.TAG }} ./
+          helm github push helm-github-${{ env.TAG }}.tgz helm-github ${{ env.TAG }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
    
       
