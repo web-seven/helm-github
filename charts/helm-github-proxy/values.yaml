@@ -2,7 +2,7 @@ replicaCount: 1
 image:
   repository: docker.pkg.github.com/web-seven/helm-github/helm-github-plugin-proxy
   pullPolicy: IfNotPresent
-  tag: "0.0.0"
+  tag: ""
 imagePullSecrets: 
 - name: "regcred"
 nameOverride: "github"
