@@ -4,9 +4,8 @@ image:
   pullPolicy: IfNotPresent
   tag: ""
 imagePullSecrets: 
-- name: "regcred"
-nameOverride: "github"
-fullnameOverride: "github"
+nameOverride: 
+fullnameOverride: 
 serviceAccount:
   create: true
   annotations: {}
