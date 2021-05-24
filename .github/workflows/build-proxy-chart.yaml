@@ -37,7 +37,7 @@ jobs:
           export ORIGIN_TAG=${{ env.TAG }}
           git tag -a helm-github-proxy-$ORIGIN_TAG -m ''
           git push origin helm-github-proxy-$ORIGIN_TAG
-          helm github push helm-github-proxy-$ORIGIN_TAG.tgz helm-github $ORIGIN_TAG
+          helm github push helm-github-proxy-$ORIGIN_TAG.tgz helm-github helm-github-proxy-$ORIGIN_TAG
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
    
