@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Prepare repository
-        run: git fetch --unshallow --tags
+        run: git fetch --unshallow
       - name: Build Docker image
         run: docker build -f ./Dockerfile -t docker.pkg.github.com/web-seven/helm-github/helm-github-plugin-proxy:${{ env.TAG }} .
       - name: Login to Github Docker Registry
