@@ -36,7 +36,7 @@ jobs:
           git config --global user.name "${GITHUB_ACTOR}"
           export ORIGIN_TAG=${{ env.TAG }}
           git tag -a helm-github-proxy-$ORIGIN_TAG -m ''
-          git push origin helm-github-proxy-$ORIGIN_TAG && helm github push helm-github-proxy-$ORIGIN_TAG.tgz helm-github helm-github-proxy-$ORIGIN_TAG
+          git push origin helm-github-proxy-$ORIGIN_TAG && helm github push helm-github-proxy-$ORIGIN_TAG.tgz helm-github master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
    
