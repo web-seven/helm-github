@@ -30,6 +30,8 @@ jobs:
           helm plugin install https://github.com/web-seven/helm-github.git
           helm repo add helm-github github://web-seven/helm-github
           helm package --version ${{ env.TAG }} --app-version ${{ env.TAG }} ./
+          git tag -a helm-github-proxy-${{ env.TAG }} -m ''
+          git push origin helm-github-proxy-${{ env.TAG }}
           helm github push helm-github-proxy-${{ env.TAG }}.tgz helm-github ${{ env.TAG }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
