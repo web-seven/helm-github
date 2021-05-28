@@ -21,11 +21,11 @@ jobs:
       - name: Prepare repository
         run: git fetch --unshallow
       - name: Build Docker image
-        run: docker build -f ./Dockerfile -t docker.pkg.github.com/web-seven/helm-github/helm-github-plugin-proxy:${{ env.TAG }} .
+        run: docker build -f ./Dockerfile -t ghcr.io/web-seven/helm-github-plugin-proxy:${{ env.TAG }} .
       - name: Login to Github Docker Registry
         run: docker login --username ${GITHUB_ACTOR} --password ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
       - name: Push Docker image to registry.
-        run: docker push docker.pkg.github.com/web-seven/helm-github/helm-github-plugin-proxy:${{ env.TAG }}
+        run: docker push ghcr.io/web-seven/helm-github-plugin-proxy:${{ env.TAG }}
       - name: Create Helm Chart
         working-directory: charts/helm-github-proxy
         run: |
