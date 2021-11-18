@@ -23,7 +23,7 @@ jobs:
       - name: Build Docker image
         run: docker build -f ./Dockerfile -t ghcr.io/web-seven/helm-github-plugin-proxy:${{ env.TAG }} .
       - name: Login to Github Docker Registry
-        run: docker login --username ${GITHUB_ACTOR} --password ${{ secrets.GITHUB_TOKEN }} ghcr.io
+        run: docker login --username ${GITHUB_ACTOR} --password ${{ secrets.ACCESS_TOKEN }} ghcr.io
       - name: Push Docker image to registry.
         run: docker push ghcr.io/web-seven/helm-github-plugin-proxy:${{ env.TAG }}
       - name: Create Helm Chart
@@ -38,6 +38,6 @@ jobs:
           git tag -a helm-github-proxy-$ORIGIN_TAG -m ''
           git push origin helm-github-proxy-$ORIGIN_TAG && helm github push helm-github-proxy-$ORIGIN_TAG.tgz helm-github master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
    
       
