@@ -35,8 +35,11 @@ octokit.repos.
             if(!release['name']) {
                 return;
             }
-            const version = release.name.substr(release.name.indexOf(semver.coerce(release.name)));
+            const releaseParts = release.name.split("-");
+            const releaseVersion = [releaseParts[releaseParts.length-2], releaseParts[releaseParts.length-1]].join('-');
+            const version = release.name.substr(release.name.indexOf(semver.coerce(releaseVersion)));
             const chartName = release.name.replace('-' + version, '');
+
             if (repoData.entries[chartName] == undefined) {
                 repoData.entries[chartName] = [];
             }
