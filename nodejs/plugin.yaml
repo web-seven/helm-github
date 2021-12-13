@@ -1,0 +1,19 @@
+name: "github"
+version: "1.1.11"
+usage: ""
+description: ""
+ignoreFlags: false
+command: "$HELM_PLUGIN_DIR/bin/helm-github.sh"
+downloaders:
+- command: "./bin/repo.sh"
+  protocols:
+  - "github"
+- command: "./bin/release.sh"
+  protocols:
+  - "github+release"
+- command: "bin/file.sh"
+  protocols:
+  - "github+file"
+hooks:
+  install: "cd $HELM_PLUGIN_DIR; ./scripts/install.sh"
+  update: "cd $HELM_PLUGIN_DIR; ./scripts/install.sh"
