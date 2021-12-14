@@ -57,7 +57,6 @@ async function getReleases() {
                             const chartName = release.name.replace('-' + version, '');
 
                             if (semver.valid(version)) {
-                                console.log(version);
                                 if (repoData.entries[chartName] == undefined) {
                                     repoData.entries[chartName] = [];
                                 }
@@ -88,7 +87,7 @@ async function getReleases() {
 
             });
     }
-    // process.stdout.write(yaml.safeDump(repoData));
+    process.stdout.write(yaml.safeDump(repoData));
 }
 
 getReleases();
