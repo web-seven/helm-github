@@ -56,34 +56,39 @@ async function getReleases() {
                             const version = release.name.substr(release.name.indexOf(semver.coerce(releaseVersion)));
                             const chartName = release.name.replace('-' + version, '');
 
-                            if (repoData.entries[chartName] == undefined) {
-                                repoData.entries[chartName] = [];
+                            if (semver.valid(version)) {
+                                console.log(version);
+                                if (repoData.entries[chartName] == undefined) {
+                                    repoData.entries[chartName] = [];
+                                }
+                                release.assets.forEach((asset) => {
+                                    const releaseData = {
+                                        apiVersion: "v2",
+                                        version: version,
+                                        name: chartName,
+                                        appVersion: asset.label,
+                                        type: 'application',
+                                        description: release.body,
+                                        digest: release.node_id,
+                                        created: release.created_at,
+                                        urls: [
+                                            'github+release://' + owner + '/' + repo + '/' + release.name + '.tgz'
+                                        ]
+                                    };
+                                    repoData.entries[chartName].push(releaseData);
+                                });
                             }
-                            release.assets.forEach((asset) => {
-                                const releaseData = {
-                                    apiVersion: "v2",
-                                    version: version,
-                                    name: chartName,
-                                    appVersion: asset.label,
-                                    type: 'application',
-                                    description: release.body,
-                                    digest: release.node_id,
-                                    created: release.created_at,
-                                    urls: [
-                                        'github+release://' + owner + '/' + repo + '/' + release.name + '.tgz'
-                                    ]
-                                };
-                                repoData.entries[chartName].push(releaseData);
-                            });
+
                         }
 
                     })
 
-                    process.stdout.write(yaml.safeDump(repoData));
+
                 }
 
             });
     }
+    // process.stdout.write(yaml.safeDump(repoData));
 }
 
 getReleases();
