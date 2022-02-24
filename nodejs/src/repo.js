@@ -18,10 +18,9 @@ const octokit = new Octokit({
 const releaseUrl = process.argv[2];
 let [owner, repo] = releaseUrl.replace('github://', '').split('/');
 
-const repoData = {
+let repoData = {
     apiVersion: 'v1',
-    entries: {
-    }
+    entries: {}
 }
 
 async function getReleases() {
@@ -77,14 +76,14 @@ async function getReleases() {
                                     repoData.entries[chartName].push(releaseData);
                                 });
                             }
-
                         }
-
                     })
-
-
                 }
+            })
+            .catch((error) => {
+              console.error('Could not fetch page with releases. Error: ', error);
 
+              loadNextPage = false;
             });
     }
     process.stdout.write(yaml.safeDump(repoData));
