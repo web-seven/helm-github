@@ -80,9 +80,9 @@ async function getReleases() {
                     })
                 }
             })
-            .catch((error) => {
-              console.error('Could not fetch page with releases. Error: ', error);
-
+            .catch((_error) => {
+              // Stop processing when GitHub throws an error on any page.
+              // Note: This could result in missing versions.
               loadNextPage = false;
             });
     }
