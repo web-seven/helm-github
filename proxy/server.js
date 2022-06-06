@@ -25,6 +25,8 @@ const server = http.createServer((req, res) => {
         token = process.env.GITHUB_TOKEN;
     }
 
+    token = token.replace(/(\r\n|\n|\r)/gm, "")
+
     res.setHeader('Content-Type', 'text/plain');
     const [owner, repo, chartFile] = req.url.replace(/^\/|\/$/g, '').split('/');
     const repoUrl = owner + '/' + repo;
@@ -49,6 +51,8 @@ const server = http.createServer((req, res) => {
             updateTime = new Date(currentTime + process.env.GITHUB_CACHE_IN_MINUTES*60000);
         }
     }
+
+    console.log(repoCommand.join(' && '));
 
     exec(repoCommand.join(' && '), (error, stdout, stderr) => {
         if (error || stderr) {
