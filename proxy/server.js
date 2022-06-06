@@ -35,22 +35,22 @@ const server = http.createServer((req, res) => {
         schema = 'https';
     }
 
-    let repoCommand = `export GITHUB_TOKEN=${token}`;
+    let repoCommand = [`export GITHUB_TOKEN=${token}`];
     if(!repositories.includes(repoName)) {
-        repoCommand += ` && helm repo add ${repoName} github://${repoUrl}`;
+        repoCommand.push(`helm repo add ${repoName} github://${repoUrl}`);
     }
 
     let currentTime = Date.now();
 
     if(currentTime >= updateTime.getTime()) {
-        repoCommand += ` && helm repo update`;
+        repoCommand.push(`helm repo update`);
 
         if(process.env.GITHUB_CACHE_IN_MINUTES) {
             updateTime = new Date(currentTime + process.env.GITHUB_CACHE_IN_MINUTES*60000);
         }
     }
 
-    exec(repoCommand, (error, stdout, stderr) => {
+    exec(repoCommand.join(' && '), (error, stdout, stderr) => {
         if (error || stderr) {
             res.statusCode = 500;
             console.debug(error);
