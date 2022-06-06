@@ -36,7 +36,7 @@ const server = http.createServer((req, res) => {
 
     let repoCommand = `export GITHUB_TOKEN=${token}`;
     if(!repositories.includes(repoName)) {
-        repoCommand += ` && helm repo add ${repoName} github://${repoName}`;
+        repoCommand += ` && helm repo add ${repoName.replace('/', '_')} github://${repoName}`;
     }
 
     let currentTime = Date.now();
