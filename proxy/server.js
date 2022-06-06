@@ -52,8 +52,6 @@ const server = http.createServer((req, res) => {
         }
     }
 
-    console.log(repoCommand.join(' && '));
-
     exec(repoCommand.join(' && '), (error, stdout, stderr) => {
         if (error || stderr) {
             res.statusCode = 500;
