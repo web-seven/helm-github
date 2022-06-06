@@ -27,7 +27,8 @@ const server = http.createServer((req, res) => {
 
     res.setHeader('Content-Type', 'text/plain');
     const [owner, repo, chartFile] = req.url.replace(/^\/|\/$/g, '').split('/');
-    const repoName = owner + '/' + repo;
+    const repoUrl = owner + '/' + repo;
+    const repoName = repoName.replace('/', '_');
     const host = req.headers.host;
     let schema = 'http';
     if (port == 443) {
@@ -36,7 +37,7 @@ const server = http.createServer((req, res) => {
 
     let repoCommand = `export GITHUB_TOKEN=${token}`;
     if(!repositories.includes(repoName)) {
-        repoCommand += ` && helm repo add ${repoName.replace('/', '_')} github://${repoName}`;
+        repoCommand += ` && helm repo add ${repoName} github://${repoUrl}`;
     }
 
     let currentTime = Date.now();
