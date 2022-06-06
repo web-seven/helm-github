@@ -28,7 +28,7 @@ const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'text/plain');
     const [owner, repo, chartFile] = req.url.replace(/^\/|\/$/g, '').split('/');
     const repoUrl = owner + '/' + repo;
-    const repoName = repoName.replace('/', '_');
+    const repoName = repoUrl.replace('/', '_');
     const host = req.headers.host;
     let schema = 'http';
     if (port == 443) {
