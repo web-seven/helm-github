@@ -5,6 +5,9 @@ const fs = require('fs');
 const hostname = process.env.GITHUB_PROXY_HOST_NAME ? process.env.GITHUB_PROXY_HOST_NAME : '0.0.0.0';
 const port = process.env.GITHUB_PROXY_PORT ? process.env.GITHUB_PROXY_PORT : 80;
 
+let repositories = [];
+let updateTime = new Date();
+
 const server = http.createServer((req, res) => {
     let token = '';
     if(!process.env.GITHUB_TOKEN || process.env.GITHUB_TOKEN == '') {
@@ -31,12 +34,31 @@ const server = http.createServer((req, res) => {
         schema = 'https';
     }
 
-    exec(`export GITHUB_TOKEN=${token} && helm repo add ${repoName} github://${repoName} && helm repo update `, (error, stdout, stderr) => {
+    let repoCommand = `export GITHUB_TOKEN=${token}`;
+    if(!repositories.includes(repoName)) {
+        repoCommand += ` && helm repo add ${repoName} github://${repoName}`;
+    }
+
+    let currentTime = Date.now();
+
+    if(currentTime >= updateTime.getTime()) {
+        repoCommand += ` && helm repo update`;
+
+        if(process.env.GITHUB_CACHE_IN_MINUTES) {
+            updateTime = new Date(currentTime + process.env.GITHUB_CACHE_IN_MINUTES*60000);
+        }
+    }
+
+    exec(repoCommand, (error, stdout, stderr) => {
         if (error || stderr) {
             res.statusCode = 500;
             console.debug(error);
             res.end(stderr);
             return;
+        }
+
+        if(!repositories.includes(repoName)) {
+            repositories.push(repoName);
         }
 
         if (req.url.includes('.tgz')) {
