@@ -20,3 +20,5 @@ resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
+env:
+  GITHUB_CACHE_IN_MINUTES: "1"
