@@ -1,7 +1,7 @@
 name: "github"
-version: "1.1.11"
-usage: ""
-description: ""
+version: "1.2.42"
+usage: "Manage chart repositories on GitHub Releases"
+description: "The plugin allows to use GitHub Releases to upload, fetch charts and to work with repositories."
 ignoreFlags: false
 command: "$HELM_PLUGIN_DIR/bin/helm-github.sh"
 downloaders:
