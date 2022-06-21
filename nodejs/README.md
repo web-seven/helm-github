@@ -6,7 +6,7 @@
 # helm-github
 ![Helm3 supported](https://img.shields.io/badge/Helm%203-supported-green)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/web-seven/helm-github)
-
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/helm-github)](https://artifacthub.io/packages/search?repo=helm-github)
 
 `helm-github` is a [helm](https://github.com/kubernetes/helm) plugin that allows you to fetch charts from [Github Releases](https://docs.github.com/en/github/administering-a-repository/about-releases) created eg. by [Helm Chart Releaser Action 2](https://github.com/web-seven/chart-releaser-action)
 
