@@ -4,6 +4,7 @@ const fs = require('fs');
 
 const hostname = process.env.GITHUB_PROXY_HOST_NAME ? process.env.GITHUB_PROXY_HOST_NAME : '0.0.0.0';
 const port = process.env.GITHUB_PROXY_PORT ? process.env.GITHUB_PROXY_PORT : 80;
+const maxBuffer = process.env.MAX_BUFFER ? process.env.MAX_BUFFER : 1024 * 1024 * 4;
 
 let repositories = [];
 let updateTime = new Date();
@@ -52,7 +53,7 @@ const server = http.createServer((req, res) => {
         }
     }
 
-    exec(repoCommand.join(' && '), (error, stdout, stderr) => {
+    exec(repoCommand.join(' && '), {maxBuffer: maxBuffer}, (error, stdout, stderr) => {
         if (error || stderr) {
             res.statusCode = 500;
             console.debug(error);
@@ -90,7 +91,9 @@ const server = http.createServer((req, res) => {
                 res.end(data);
             });
         } else {
-            exec(`export GITHUB_TOKEN=${token} && cat $(helm env HELM_REPOSITORY_CACHE)/${repoName}-index.yaml `, (error, stdout, stderr) => {
+            exec(`export GITHUB_TOKEN=${token} && cat $(helm env HELM_REPOSITORY_CACHE)/${repoName}-index.yaml `, 
+                {maxBuffer: maxBuffer}, 
+                (error, stdout, stderr) => {
                 if (error || stderr) {
                     res.statusCode = 500;
                     console.debug(error);
