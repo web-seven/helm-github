@@ -22,3 +22,4 @@ tolerations: []
 affinity: {}
 env:
   GITHUB_CACHE_IN_MINUTES: "1"
+  GITHUB_PROXY_PORT: 80
