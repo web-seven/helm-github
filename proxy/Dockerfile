@@ -1,4 +1,4 @@
-FROM node:current-buster
+FROM 18.4.0-buster
 
 USER root
 RUN apt-get update && \
