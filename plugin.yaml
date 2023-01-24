@@ -1,5 +1,5 @@
 name: "github"
-version: "1.2.50"
+version: "1.2.51"
 usage: "Manage chart repositories on GitHub Releases"
 description: "The plugin allows to use GitHub Releases to upload, fetch charts and to work with repositories."
 ignoreFlags: false
