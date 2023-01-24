@@ -36,8 +36,6 @@ spec:
             value: "{{ .Values.env.GITHUB_CACHE_IN_MINUTES }}"
           - name: GITHUB_PROXY_PORT
             value: "{{ .Values.env.GITHUB_PROXY_PORT }}"
-          - name: MAX_BUFFER
-            value: "{{ .Values.env.MAX_BUFFER }}"
           ports:
             - name: http
               containerPort: {{ .Values.env.GITHUB_PROXY_PORT }}
