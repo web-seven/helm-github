@@ -41,12 +41,14 @@ const server = http.createServer((req, res) => {
     let repoCommand = [`export GITHUB_TOKEN=${token}`];
     if(!repositories.includes(repoName)) {
         repoCommand.push(`helm repo add ${repoName} github://${repoUrl}`);
+        console.log(`Added repository: ${repoName}`);
     }
 
     let currentTime = Date.now();
 
     if(currentTime >= updateTime.getTime()) {
         repoCommand.push(`helm repo update`);
+        console.log(`Request update of repositories index.`);
 
         if(process.env.GITHUB_CACHE_IN_MINUTES) {
             updateTime = new Date(currentTime + process.env.GITHUB_CACHE_IN_MINUTES*60000);
@@ -100,7 +102,7 @@ const server = http.createServer((req, res) => {
                     res.end(stderr);
                     return;
                 }
-
+                console.log(`Return index from helm cache.`);
                 res.statusCode = 200;
                 res.end(stdout.replace(/github\+release:\/\//g, schema + '://' + host + '/'));
             });
