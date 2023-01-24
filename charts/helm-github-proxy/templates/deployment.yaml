@@ -34,9 +34,11 @@ spec:
           env:
           - name: GITHUB_CACHE_IN_MINUTES
             value: "{{ .Values.env.GITHUB_CACHE_IN_MINUTES }}"
+          - name: GITHUB_PROXY_PORT
+            value: "{{ .Values.env.GITHUB_PROXY_PORT }}"
           ports:
             - name: http
-              containerPort: 80
+              containerPort: {{ .Values.env.GITHUB_PROXY_PORT }}
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
