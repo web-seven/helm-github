@@ -2,6 +2,7 @@ const { Octokit } = require("@octokit/rest");
 const yaml = require("js-yaml");
 const https = require('https');
 const GITHUB_TOKEN = process.env['GITHUB_TOKEN'];
+const GITHUB_DELAY = process.env['GITHUB_DELAY'];
 
 if (!GITHUB_TOKEN) {
     process.stderr.write('GITHUB_TOKEN not found in environment.\n');
@@ -15,6 +16,9 @@ const octokit = new Octokit({
 const releaseUrl = process.argv[2];
 let [owner, repo, releaseName] = releaseUrl.replace('github+release://', '').replace('.tgz', '').split('/');
 
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+} 
 
 async function getRelease() {
 
@@ -75,7 +79,14 @@ async function getRelease() {
                         }
                     })
                 }
+            }).catch((e) => {
+                process.stderr.write(e);
+                loadNextPage = false;
             });
+            
+            if(GITHUB_DELAY) {
+                await delay(parseInt(GITHUB_DELAY));
+            }
     }
 }
 
