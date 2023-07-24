@@ -4,6 +4,7 @@ const fs = require('fs-extra')
 const yaml = require("js-yaml");
 var path = require('path');
 var tar = require('tar');
+var fetchAll = require('./modules/fetch-all');
 const GITHUB_TOKEN = process.env['GITHUB_TOKEN'];
 
 const octokit = new Octokit({
@@ -82,6 +83,9 @@ switch (command) {
                     process.stdout.write(`Chart not released because of: ${e.message}.\n`);
                 });
             })
+        break;
+        case "fetch-all":
+            fetchAll(releaseFile, GITHUB_TOKEN);
         break;
     default:
         process.stdout.write(`${command} command not supported, please check documentation.\n`);
