@@ -1,6 +1,10 @@
 const { Octokit } = require("@octokit/rest");
 const https = require('https');
 const fs = require('fs');
+const GITHUB_DELAY = process.env['GITHUB_DELAY'];
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+} 
 module.exports = async function (repoUrl, GITHUB_TOKEN) {
     let [owner, repo] = repoUrl.replace('github://', '').split('/');
     const octokit = new Octokit({
@@ -13,6 +17,9 @@ module.exports = async function (repoUrl, GITHUB_TOKEN) {
     while (loadNextPage) {
         console.log("Fetching page " + pageNumber);
         pageNumber++;
+        if(GITHUB_DELAY) {
+            await delay(parseInt(GITHUB_DELAY));
+        }
         await octokit.repos.
             listReleases({
                 owner: owner,
@@ -24,7 +31,7 @@ module.exports = async function (repoUrl, GITHUB_TOKEN) {
                 if (data.length == 0) {
                     loadNextPage = false;
                 } else {
-                    data.forEach((releaseData) => {
+                    data.forEach(async (releaseData) => {
                         let assetUrl = releaseData.assets[0].url;
                         let assetFileName = releaseData.assets[0].name;
                         console.log("Downloading " + assetFileName);
@@ -37,6 +44,9 @@ module.exports = async function (repoUrl, GITHUB_TOKEN) {
                                 "User-Agent": 'Helm-Plugin-Github'
                             }
                         };
+                        if(GITHUB_DELAY) {
+                            await delay(parseInt(GITHUB_DELAY));
+                        }
                         const req = https.request(assetUrl, options, (res) => {
 
                             if (res.statusCode == 302) {
