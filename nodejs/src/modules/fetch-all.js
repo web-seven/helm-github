@@ -33,7 +33,7 @@ module.exports = async function (repoUrl, GITHUB_TOKEN) {
         });
     }
     console.log('Starting download of ' + releases.length + ' releases');
-    for (let releaseData of releases) {
+    for (let [i, releaseData] of releases) {
         let assetUrl = releaseData.assets[0].url;
         let assetFileName = releaseData.assets[0].name;
         const options = {
@@ -48,7 +48,7 @@ module.exports = async function (repoUrl, GITHUB_TOKEN) {
         if(GITHUB_DELAY) {
             await delay(parseInt(GITHUB_DELAY));
         }
-        console.log("Downloading " + assetFileName);
+        console.log("Downloading " + assetFileName + "." + (i+1) + " from " + releases.length + "releases");
         const req = https.request(assetUrl, options, (res) => {
 
             if (res.statusCode == 302) {
