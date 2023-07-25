@@ -14,15 +14,15 @@ module.exports = async function (repoUrl, GITHUB_TOKEN) {
     let pageNumber = 0;
     let loadNextPage = true;
     console.log("Fetching all releases from " + owner + "/" + repo);
+    let releases = [];
     while (loadNextPage) {
-        console.log(new Date().toString() + "Fetching page " + pageNumber);
+        console.log("Fetching page " + pageNumber + 1);
         pageNumber++;
-        let releases = [];
         await octokit.repos.listReleases({
             owner: owner,
             repo: repo,
             page: pageNumber,
-            per_page: 100,
+            per_page: 100
         })
         .then(({ data }) => {
             if (data.length == 0) {
@@ -31,49 +31,45 @@ module.exports = async function (repoUrl, GITHUB_TOKEN) {
                 releases = [...releases, ...data];
             }
         });
-
-        for (let releaseData of releases) {
-            let assetUrl = releaseData.assets[0].url;
-            let assetFileName = releaseData.assets[0].name;
-            const options = {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/octet-stream',
-                    Authorization: 'token ' + GITHUB_TOKEN,
-                    "X-GitHub-Api-Version": "2022-11-28",
-                    "User-Agent": 'Helm-Plugin-Github'
-                }
-            };
-            if(GITHUB_DELAY) {
-                await delay(parseInt(GITHUB_DELAY));
+    }
+    console.log('Starting download of ' + releases.length + ' releases');
+    for (let releaseData of releases) {
+        let assetUrl = releaseData.assets[0].url;
+        let assetFileName = releaseData.assets[0].name;
+        const options = {
+            method: 'GET',
+            headers: {
+                Accept: 'application/octet-stream',
+                Authorization: 'token ' + GITHUB_TOKEN,
+                "X-GitHub-Api-Version": "2022-11-28",
+                "User-Agent": 'Helm-Plugin-Github'
             }
-            console.log(new Date().toString() + " Downloading " + assetFileName);
-            const req = https.request(assetUrl, options, (res) => {
+        };
+        if(GITHUB_DELAY) {
+            await delay(parseInt(GITHUB_DELAY));
+        }
+        console.log("Downloading " + assetFileName);
+        const req = https.request(assetUrl, options, (res) => {
 
-                if (res.statusCode == 302) {
-                    const redReq = https.request(res.headers.location, (res) => {
-
-                        res.on('data', (d) => {
-                            fs.appendFileSync(assetFileName, d);
-                        });
-                    });
-
-                    redReq.on('error', (e) => {
-                        process.stderr.write(e);
-                    });
-                    redReq.end();
-                } else {
-                    res.on('data', (d) => {
+            if (res.statusCode == 302) {
+                const redReq = https.request(res.headers.location, (redRes) => {
+                    redRes.on('data', (d) => {
                         fs.appendFileSync(assetFileName, d);
                     });
-                }
-            });
-
-            req.on('error', (e) => {
-                process.stderr.write(e);
-            });
-            req.end();
-
-        };
-    }
+                });
+                redReq.on('error', (e) => {
+                    console.error(e);
+                });
+                redReq.end();
+            } else {
+                res.on('data', (d) => {
+                    fs.appendFileSync(assetFileName, d);
+                });
+            }
+        });
+        req.on('error', (e) => {
+            console.error(e);
+        });
+        req.end();
+    };
 }
