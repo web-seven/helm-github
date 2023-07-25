@@ -1,7 +1,7 @@
 const { Octokit } = require("@octokit/rest");
 const https = require('https');
 const fs = require('fs');
-const GITHUB_DELAY = process.env['GITHUB_DELAY'];
+const GITHUB_DELAY = process.env['GITHUB_DELAY']?process.env['GITHUB_DELAY']:1000;
 async function delay(time) {
     return new Promise(resolve => setTimeout(resolve, time));
 } 
@@ -15,8 +15,9 @@ module.exports = async function (repoUrl, GITHUB_TOKEN) {
     let loadNextPage = true;
     console.log("Fetching all releases from " + owner + "/" + repo);
     let releases = [];
+    console.log("Getting releases metadata...");
     while (loadNextPage) {
-        console.log("Fetching page " + pageNumber + 1);
+        console.log("received " + ((pageNumber + 1) * 100) + " releases metadata");
         pageNumber++;
         await octokit.repos.listReleases({
             owner: owner,
@@ -32,8 +33,15 @@ module.exports = async function (repoUrl, GITHUB_TOKEN) {
             }
         });
     }
-    console.log('Starting download of ' + releases.length + ' releases');
-    for (let [i, releaseData] of releases) {
+    let startTime = new Date().getTime();
+    console.log('Starting download of ' + releases.length + ' releases assets.');
+    let i = 0;
+    for (let releaseData of releases) {
+        i++;
+        if(releaseData.assets.length == 0) {
+            console.log("Release " + releaseData.name + " has no assets. Skipping.");
+            continue;
+        }
         let assetUrl = releaseData.assets[0].url;
         let assetFileName = releaseData.assets[0].name;
         const options = {
@@ -45,10 +53,8 @@ module.exports = async function (repoUrl, GITHUB_TOKEN) {
                 "User-Agent": 'Helm-Plugin-Github'
             }
         };
-        if(GITHUB_DELAY) {
-            await delay(parseInt(GITHUB_DELAY));
-        }
-        console.log("Downloading " + assetFileName + "." + (i+1) + " from " + releases.length + "releases");
+        await delay(parseInt(GITHUB_DELAY));
+        console.log(assetFileName + " (" + i + " from " + releases.length + ", " + Math.round((new Date().getTime() - startTime) / 1000) + "s from "+ (((releases.length-i)*GITHUB_DELAY)/1000) +"s left)");
         const req = https.request(assetUrl, options, (res) => {
 
             if (res.statusCode == 302) {
